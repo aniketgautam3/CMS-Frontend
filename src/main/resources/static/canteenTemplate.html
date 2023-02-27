@@ -86,8 +86,7 @@
             	
             	const navLinks = document.querySelectorAll('#sidebar_navigation-list .nav-link');
             	navLinks.forEach(link => {
-            	  if (link.getAttribute('href').includes(page)) {
-              		console.log(link.getAttribute('href'), link.getAttribute('href').includes(page), link.parentNode.classList);
+            	  if ((link.getAttribute('href') || "")).includes(page)) {
             	    link.classList.add('active');
             	  } else {
             	    link.classList.remove('active');
