@@ -6,12 +6,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
- 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/profile/{id}").setViewName("../canteenTemplate.html");
-        registry.addViewController("/dashboard").setViewName("/canteenTemplate.html");
-        registry.addViewController("/dashboard2").setViewName("/canteenTemplate.html");
-        // registry.addViewController("/dashboard3").setViewName("apple");
+    	registry.addViewController("/login").setViewName("/login/index.html");
+        registry.addViewController("/canteen/profile/{id}").setViewName("../../canteenTemplate.html");
+        registry.addViewController("/canteen/dashboard").setViewName("../canteenTemplate.html");
+        registry.addViewController("/user/dashboard").setViewName("../userTemplate.html");
+        registry.addViewController("/admin/dashboard").setViewName("../adminTemplate.html");
     }
 }

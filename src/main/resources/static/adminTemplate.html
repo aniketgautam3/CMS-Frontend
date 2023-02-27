@@ -50,12 +50,12 @@
                 <div class="position-sticky pt-3" style="top:60px">
                     <ul id="sidebar_navigation-list" class="nav nav-pills flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="/canteen/dashboard">
+                            <a class="nav-link" href="/admin/dashboard">
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/canteen/profile/1">
+                            <a class="nav-link">
                                 Profile
                             </a>
                         </li>
@@ -73,10 +73,9 @@
             </main>
 
             <script>
-            	// Load the main contents
             	const urlPath = window.location.pathname;
             	const page = urlPath.match(/^\/(\w+)\/(\w+)\/?/)[2];
-            	const fileToLoad = "/canteen/" + page + ".html";
+            	const fileToLoad = "/admin/" + page + ".html";
             	console.log(fileToLoad);
             	const mainContentElem = document.getElementById('main-content');
             	fetch(fileToLoad).then(async res => {
