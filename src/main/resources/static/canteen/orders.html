@@ -36,6 +36,7 @@
         ordersListElem.innerHTML = '';
         filteredOrders.forEach((order) => {
             const orderElement = document.createElement("div");
+            const orderDate = new Date(order.timeStamp);
             orderElement.innerHTML = `
                 <div class="card mt-2">
                 <div class="card-header">
@@ -50,9 +51,10 @@
                 </div>
                 ${
                     // Display Mark as delivered button only if the order is pending and is for today
-                    order.timeStamp === today.toISOString() && order.status === 'Pending' ? `
+                    order.status === 'Pending' && orderDate.getDate() === today.getDate() && orderDate.getMonth() === today.getMonth() && orderDate.getFullYear() === today.getFullYear() ?
+                    `
                     <div class="card-footer">
-                        <button class="btn btn-primary float-end">Deliver</button>
+                        <button class="btn btn-success float-end">Mark as Delivered</button>
                     </div>
                     ` : ''
                 }
