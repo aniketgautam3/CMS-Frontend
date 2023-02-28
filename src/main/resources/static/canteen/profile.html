@@ -9,7 +9,9 @@
     fetch(url).then(async res => {
         const responseJSON = await res.json();
         console.log(responseJSON);
-        console.log(responseJSON);
+		if (!Arrays.isArray(responseJSON) || responseJSON.length == 0) {
+			pastOrdersElem.innerHTML = `No order placed yet`;
+		}
         responseJSON.forEach((order) => {
             const orderElement = document.createElement("div");
             orderElement.innerHTML = `
