@@ -1,167 +1,287 @@
 <div class="d-flex justify-content-end mt-2 me-4">
-    <input type="date" id="date-picker" class="col-3" />
+  <input type="date" id="date-picker" class="col-3" />
 </div>
 <div id="morning-menu-list" class="container-fluid mt-3">
-    <div class="list">
-          <div class="item">
-          <p>Dal</p>
-          </div>
-           <div class="quantity">
-               Default Quantity:<br>
-               1
-           </div>
-         <div class="price">
-                Price:<br>
-                1
-         </div>
-    </div>
 </div>
 <div id="evening-menu-list" class="container-fluid mt-3"></div>
 
 <div class="modal fade item-manager-model" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-           <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        ...
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Items Manager</h5>
+      </div>
+      <div class="modal-body item-manager-model-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="$('.item-manager-model').modal('hide');">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addSelectedItemsToMenu()">Add Selected items to menu</button>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="modal fade create-item-model" tabindex="2" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Item</h5>
+      </div>
+      <div class="modal-body create-item-model-body">
+        Item Name: <input type="text" id="item-name" class="form-control" /><br>
+        Item Price: <input type="number" id="item-price" class="form-control" /><br>
+        Item Default Quantity: <input type="number" id="item-quantity" class="form-control" /><br>
+        Item Type: <select id="item-type" class="form-control">
+          <option value="0">Vegetarian</option>
+          <option value="1">Non-Vegetarian</option>
+          </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="$('.add-item-model').modal('hide');">Close</button>
+        <button type="button" class="btn btn-primary" onclick="createItem()">Create item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
-	document.title = "Menu Management";
-	
-	const menuList = [	// menus of the day
-	    {
-	        "id": 5,
-	        "approval": "Pending",
-	        "type": "Morning",
-	        "timeStamp":"2023-03-01T15:25:36.000+00:00",
-	        "items": [{
-	            "id": 5,
-	            "itemType": 1,
-	            "price": 40,
-	            "quantity": 3,
-	            "name": "Chicken curry"
-	          },
-	          {
-	            "itemType": 0,
-	            "price": 40,
-	            "quantity": 3,
-	            "imagePath": "",
-	            "name": "Dahi"
-	          },
-	          {
-	            "id": 8,
-	            "itemType": 1,
-	            "price": 40,
-	            "quantity": 3,
-	            "name": "Fish Fry"
-	          }]
-	    }
-	];
-	
-    // Default values
-    let selectedDate = new Date(); // Today's date
-    const today = new Date();
-    document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
+  document.title = "Menu Management";
 
-    const displayMenus = async () => {
-    	// or fetch
-    	const morningMenu = menuList.filter(menu => {
-            const menuDate = new Date(menu.timeStamp);
-            return menuDate.getDate() === selectedDate.getDate() &&
-            menuDate.getMonth() === selectedDate.getMonth() &&
-            menuDate.getFullYear() === selectedDate.getFullYear() &&
-            menu.type == "Morning";
-        })[0] || null;
-    	const lunchMenu = menuList.filter(menu => {
-            const menuDate = new Date(menu.timeStamp);
-            return menuDate.getDate() === selectedDate.getDate() &&
-            menuDate.getMonth() === selectedDate.getMonth() &&
-            menuDate.getFullYear() === selectedDate.getFullYear() &&
-            menu.type == "Lunch";
-        })[0] || null;
+  const menuList = [	// menus of the day
+    {
+      "id": 5,
+      "approval": "Pending",
+      "type": "Morning",
+      "timeStamp": "2023-03-01T15:25:36.000+00:00",
+      "items": [{
+        "id": 5,
+        "itemType": 1,
+        "price": 40,
+        "quantity": 3,
+        "name": "Chicken curry"
+      },
+      {
+        "itemType": 0,
+        "price": 40,
+        "quantity": 3,
+        "imagePath": "",
+        "name": "Dahi"
+      },
+      {
+        "id": 8,
+        "itemType": 1,
+        "price": 40,
+        "quantity": 3,
+        "name": "Fish Fry"
+      }]
+    }
+  ];
 
-    	if(morningMenu) {
-    		const morningMenuListElem = document.getElementById('morning-menu-list');
-    		morningMenu.items.forEach(item => {
-    			
-    		});
-    		const addItemElement = document.createElement("div");
-    		addItemElement.innerHTML = `<div class="list">
-    			<div class="quantity">+ Add Item</div>
+  // Default values
+  let selectedDate = new Date(); // Today's date
+  const today = new Date();
+  document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
+  let morningMenu, lunchMenu;
+  const displayMenus = async () => {
+    morningMenu = menuList.filter(menu => {
+      const menuDate = new Date(menu.timeStamp);
+      return menuDate.getDate() === selectedDate.getDate() &&
+        menuDate.getMonth() === selectedDate.getMonth() &&
+        menuDate.getFullYear() === selectedDate.getFullYear() &&
+        menu.type == "Morning";
+    })[0] || null;
+    lunchMenu = menuList.filter(menu => {
+      const menuDate = new Date(menu.timeStamp);
+      return menuDate.getDate() === selectedDate.getDate() &&
+        menuDate.getMonth() === selectedDate.getMonth() &&
+        menuDate.getFullYear() === selectedDate.getFullYear() &&
+        menu.type == "Lunch";
+    })[0] || null;
+
+    if (morningMenu) {
+      const morningMenuListElem = document.getElementById('morning-menu-list');
+      morningMenu.items.forEach(item => {
+        const itemElem = document.createElement('div');
+        itemElem.classList.add('list');
+        itemElem.innerHTML = `
+          <div class="item">
+            <p>${item.name}</p>
+          </div>
+          <div class="quantity">
+            Recomended Quantity:<br>
+            ${item.quantity}
+          </div>
+          <div class="price">
+            Price:<br>
+            ${item.price}
+          </div>
+          <div class="action">
+            <a href="#" onclick="deleteItemFromMenu(${item.id}, 'Morning');">Delete</a>
+          </div>
+        `;
+        morningMenuListElem.append(itemElem);
+      });
+      const addItemElement = document.createElement("div");
+      addItemElement.innerHTML = `<div class="list">
+    			<div class="quantity justify-content-center" onclick="selectedMenu = 'Morning'; showItemManager();">+ Add Item</div>
     	    </div>
 			`;
-    		morningMenuListElem.append(addItemElement);
-    	}
-    };
-    
-	// Item Manager
-	let selectedMenu = "Morning"
-    const showItemManager = () => {
-    	$('.item-manager-model').modal('show');
+      morningMenuListElem.append(addItemElement);
+    } else {
+      const morningMenuListElem = document.getElementById('morning-menu-list');
+      morningMenuListElem.innerHTML = `<a href="#" onclick="createNewMenu('Morning');">Create New Menu</a>
+      `;
     }
-    
-    // Event Handlers
-    document.getElementById('date-picker').addEventListener('change', (e) => {
-        selectedDate = new Date(e.target.value);
-        displayMenus();
+  };
+
+  // Item Manager
+  let selectedMenuType = "Morning";
+  const showItemManager = async () => {
+    $('.item-manager-model').modal('show');
+    // Load items from server
+    const itemManagerBodyElem = document.querySelector('.item-manager-model-body');
+    itemManagerBodyElem.innerHTML = '';
+    const items = await fetch('http://localhost:8080/getitems').then(res => res.json());
+    items.forEach(item => {
+      const itemElem = document.createElement('div');
+      itemElem.classList.add('list');
+      itemElem.innerHTML = `
+          <div>
+            <input type="checkbox" id="item-${item.id}" name="item-selected" value="${item.id}">
+          </div>
+          <div>
+            <p>${item.name}</p>
+          </div>
+          <div>
+            Recomended Quantity:<br>
+            ${item.quantity}
+          </div>
+          <div>
+            Price:<br>
+            ${item.price}
+          </div>
+        `;
+      itemManagerBodyElem.append(itemElem);
     });
+    const createItemBtn = document.createElement('div');
+    createItemBtn.classList.add('list');
+    createItemBtn.innerHTML = `
+      <div class="quantity justify-content-center" onclick="showCreateItemModal();">+ Create Item</div>
+    `;
+    itemManagerBodyElem.append(createItemBtn);
+  }
+  const addSelectedItemsToMenu = async () => {
+    const selectedItems = document.querySelectorAll('input[name="item-selected"]:checked');
+    const selectedItemsIds = [];
+    selectedItems.forEach(item => {
+      selectedItemsIds.push(item.value);
+    });
+    const selectedMenu = selectedMenuType === "Morning" ? morningMenu : lunchMenu;
+    const response = await fetch(`http://localhost:8080/additemstomenu/${selectedMenu.id}/${selectedItemsIds.join(",")}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      $('.item-manager-model').modal('hide');
+      displayMenus();
+    } else {
+      alert('Error adding items to menu');
+    }
+  }
+
+  const deleteItemFromMenu = async (itemId, menuType) => {
+    const selectedMenu = menuType === "Morning" ? morningMenu : lunchMenu;
+    const response = await fetch(`http://localhost:8080/removefrommenu/${selectedMenu.id}/${itemId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      displayMenus();
+    } else {
+      alert('Error deleting item from menu');
+    }
+  }
+
+  // Create Item
+  const showCreateItemModal = () => {
+    $('.create-item-model').modal('show');
+  }
+
+  const createItem = () => {
+    const itemName = document.getElementById('item-name').value;
+    const itemQuantity = document.getElementById('item-quantity').value;
+    const itemPrice = document.getElementById('item-price').value;
+    const itemType = document.getElementById('item-type').value;
+    const res = fetch('http://localhost:8080/additem', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: itemName,
+        quantity: itemQuantity,
+        price: itemPrice,
+        type: itemType
+      })
+    });
+    if (res.status === 200) {
+      $('.create-item-model').modal('hide');
+      showItemManager();
+    } else {
+      alert('Error creating item');
+    }
+  }
+
+  // Event Handlers
+  document.getElementById('date-picker').addEventListener('change', (e) => {
+    selectedDate = new Date(e.target.value);
     displayMenus();
+  });
+  displayMenus();
 </script>
 
 
 <style>
-.list
-{
-  display: flex;
- flex-wrap: wrap;
-  align-content: space-between ;
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
     background-color: #83afd3;
-   padding: 2px;
-   margin-top: 10px;
-   border-radius: 30px;
-   align-items: center;
-}
+    padding: 2px;
+    margin-top: 10px;
+    border-radius: 30px;
+    align-items: center;
+  }
 
-.item
-{
+  .item {
     flex: 2;
     margin-left: 30px;
     align-items: center;
     align-self: center;
     font-size: 18px;
     margin-top: 10px;
-    
-}
-.quantity
-{
-    flex: 1;
-   align-self: center;
-}
-.price
-{
-    flex:1;
-    align-self: center;
-}
 
+  }
 
-.total
-{
+  .quantity {
     flex: 1;
     align-self: center;
-}
+  }
+
+  .price {
+    flex: 1;
+    align-self: center;
+  }
 
 
+  .total {
+    flex: 1;
+    align-self: center;
+  }
 </style>
