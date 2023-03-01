@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/canteen/profile/{id}").setViewName("../../canteenTemplate.html");
         registry.addViewController("/canteen/orders").setViewName("../canteenTemplate.html");
         registry.addViewController("/canteen/dashboard").setViewName("../canteenTemplate.html");
+        registry.addViewController("/canteen/menu-management").setViewName("../canteenTemplate.html");
         registry.addViewController("/user/dashboard").setViewName("../userTemplate.html");
         registry.addViewController("/admin/dashboard").setViewName("../adminTemplate.html");
     }

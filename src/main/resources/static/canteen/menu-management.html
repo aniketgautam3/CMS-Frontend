@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-end mt-2 me-4">
+    <input type="date" id="date-picker" class="col-3 d-none" />
+</div>
+<div id="morning-menu" class="container-fluid mt-3"></div>
+<div id="evening-menu" class="container-fluid mt-3"></div>
+
+<script>
+	document.title = "Menu Management";
+	
+	const menu = [	// menus of the day
+	    {
+	        "id": 5,
+	        "approval": "Pending",
+	        "type": "Morning",
+	        "items": []
+	    }
+	];
+	
+    // Default values
+    let selectedDate = new Date(); // Today's date
+    const today = new Date();
+    document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
+
+    // Event Handlers
+    document.getElementById('date-picker').addEventListener('change', (e) => {
+        if (!document.getElementById('pastFutureOrdersTab').classList.contains('active'))
+            return;
+        selectedDate = new Date(e.target.value);
+    });
+    
+    // 
+    
+</script>

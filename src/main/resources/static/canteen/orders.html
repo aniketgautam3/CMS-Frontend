@@ -12,16 +12,18 @@
 <div id="orders-list" class="container-fluid mt-3"></div>
 
 <script>
+	document.title = "Orders Management";
+
     // Default values
     let selectedDate = new Date(); // Today's date
     const today = new Date();
     document.getElementById('date-picker').value = (new Date(today - (24*60*60*1000))).toISOString().substr(0, 10); // set the default date of date picker to yesterday
 
-    const orders = [
+    let orders = [
         {"id":1,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-28T15:25:36.000+00:00","feedBack":null,"items":[]},
         {"id":2,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-27T15:25:36.000+00:00","feedBack":null,"items":[]},
-        {"id":3,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-26T15:25:36.000+00:00","feedBack":null,"items":[]},
-        {"id":4,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-26T15:25:36.000+00:00","feedBack":null,"items":[]}
+        {"id":3,"status":"Pending","orderType":"Lunch","timeStamp":"2023-03-01T15:25:36.000+00:00","feedBack":null,"items":[]},
+        {"id":4,"status":"Pending","orderType":"Lunch","timeStamp":"2023-03-01T15:25:36.000+00:00","feedBack":null,"items":[]}
     ];
     
     const displayOrdersList = () => {
@@ -46,7 +48,7 @@
                 <div class="card-body">
                     <b>Order Type:</b> ${order.orderType} <br/>
                     <b>Items:</b> <br/> 
-                    ${order.items.length === 0 ? "None" : order.items.join(", ")} <br/>
+                    ${order.cartItems.length === 0 ? "None" : order.cartItems.join(", ")} <br/>
                     <b>Feedback:</b> ${order.feedBack ?? "N/A"}
                 </div>
                 ${
@@ -85,6 +87,10 @@
         document.getElementById('date-picker').classList.remove('d-none');
         displayOrdersList();
     });
-    // TODO: add this inside event of getallorders api fetched
-    displayOrdersList();
+    fetch(`http://localhost:8080/order/getorders`).then(async res => {
+        const responseJSON = await res.json();
+        orders = responseJSON;
+        console.log(orders);
+        displayOrdersList();
+    });
 </script>
