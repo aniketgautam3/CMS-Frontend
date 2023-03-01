@@ -113,6 +113,19 @@ input[type="number"] {
 
 
 }
+.sumtotal
+{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  font-size: 27px;
+  text-transform: uppercase;
+  font-weight: bold;
+  
+
+}
 
    </style>
     <meta charset='utf-8'>
@@ -127,11 +140,9 @@ input[type="number"] {
       <h2>Today's Menu</h2>
     </div>
     <div class="list">
-          <div class="item">
-           
-          <p> &#127858;    Dal</p>
+          <div class="item"> 
+          <p> &#127858; Dal</p>
           </div>
-          
           
             <div class="quantity">
                 <label for="quantity">Quantity:</label>
@@ -149,6 +160,12 @@ input[type="number"] {
         
     </div>
 
+
+    <div class="sumtotal">
+           <div>
+      <a for="total">Total:</a></div>
+    <div><input type="number" class="form-control" id="sumtotal" name="sumtotal" readonly></div>
+    </div>
 <div class="placeorder">
     <div class="placeorder-buttons">
         <button onclick="placed()" id="order" class="b1">Order</button>   
