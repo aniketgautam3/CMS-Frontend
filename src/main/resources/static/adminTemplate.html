@@ -73,24 +73,37 @@
             </main>
 
             <script>
-            	const urlPath = window.location.pathname;
-            	const page = urlPath.match(/^\/(\w+)\/(\w+)\/?/)[2];
-            	const fileToLoad = "/admin/" + page + ".html";
-            	console.log(fileToLoad);
-            	const mainContentElem = document.getElementById('main-content');
-            	fetch(fileToLoad).then(async res => {
-            		const responseHTML = await res.text();
-            		$(mainContentElem).html(responseHTML);
-            	});
-            	
-            	const navLinks = document.querySelectorAll('#sidebar_navigation-list .nav-link');
-            	navLinks.forEach(link => {
-            	  if ((link.getAttribute('href') || "").includes(page)) {
-            	    link.classList.add('active');
-            	  } else {
-            	    link.classList.remove('active');
-            	  }
-            	});
+            	// Load the main contents
+				const loadMainContent = async () => {
+	            	const urlPath = window.location.pathname;
+	            	let page = urlPath.match(/^\/(.+)\/?\??/)[1];
+	            	const mainContentElem = document.getElementById('main-content');
+	            	do {
+	            		console.log(page);
+		            	const fileToLoad = "/" + page + ".html";
+	            		const res = await fetch(fileToLoad);
+	            		const responseHTML = await res.text();
+	            		if(!res.ok || new DOMParser().parseFromString(responseHTML, 'text/html').title.includes("Template")) {
+	            			page = page.split("/");
+	            			page.pop();
+							page = page.join("/");
+	            			continue;
+	            		}
+	            		$(mainContentElem).html(responseHTML);
+	                	const navLinks = document.querySelectorAll('#sidebar_navigation-list .nav-link');
+	                	navLinks.forEach(link => {
+	                	  if ((link.getAttribute('href') || "").includes(page)) {
+	                	    link.classList.add('active');
+	                	  } else {
+	                	    link.classList.remove('active');
+	                	  }
+	                	});
+
+	            		break;
+	            	} while (page != "" && page != "/");
+				};
+				
+				loadMainContent();
             </script>
         </div>
     </div>
