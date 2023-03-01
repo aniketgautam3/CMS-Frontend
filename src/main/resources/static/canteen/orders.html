@@ -36,6 +36,7 @@
         });
         // List the orders
         ordersListElem.innerHTML = '';
+        if(filteredOrders.length == 0) ordersListElem.innerHTML = 'No orders on this day.';
         filteredOrders.forEach((order) => {
             const orderElement = document.createElement("div");
             const orderDate = new Date(order.timeStamp);

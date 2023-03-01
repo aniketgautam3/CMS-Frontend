@@ -1,18 +1,73 @@
 <div class="d-flex justify-content-end mt-2 me-4">
-    <input type="date" id="date-picker" class="col-3 d-none" />
+    <input type="date" id="date-picker" class="col-3" />
 </div>
-<div id="morning-menu" class="container-fluid mt-3"></div>
-<div id="evening-menu" class="container-fluid mt-3"></div>
+<div id="morning-menu-list" class="container-fluid mt-3">
+    <div class="list">
+          <div class="item">
+          <p>Dal</p>
+          </div>
+           <div class="quantity">
+               Default Quantity:<br>
+               1
+           </div>
+         <div class="price">
+                Price:<br>
+                1
+         </div>
+    </div>
+</div>
+<div id="evening-menu-list" class="container-fluid mt-3"></div>
+
+<div class="modal fade item-manager-model" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+           <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 	document.title = "Menu Management";
 	
-	const menu = [	// menus of the day
+	const menuList = [	// menus of the day
 	    {
 	        "id": 5,
 	        "approval": "Pending",
 	        "type": "Morning",
-	        "items": []
+	        "timeStamp":"2023-03-01T15:25:36.000+00:00",
+	        "items": [{
+	            "id": 5,
+	            "itemType": 1,
+	            "price": 40,
+	            "quantity": 3,
+	            "name": "Chicken curry"
+	          },
+	          {
+	            "itemType": 0,
+	            "price": 40,
+	            "quantity": 3,
+	            "imagePath": "",
+	            "name": "Dahi"
+	          },
+	          {
+	            "id": 8,
+	            "itemType": 1,
+	            "price": 40,
+	            "quantity": 3,
+	            "name": "Fish Fry"
+	          }]
 	    }
 	];
 	
@@ -21,13 +76,92 @@
     const today = new Date();
     document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
 
+    const displayMenus = async () => {
+    	// or fetch
+    	const morningMenu = menuList.filter(menu => {
+            const menuDate = new Date(menu.timeStamp);
+            return menuDate.getDate() === selectedDate.getDate() &&
+            menuDate.getMonth() === selectedDate.getMonth() &&
+            menuDate.getFullYear() === selectedDate.getFullYear() &&
+            menu.type == "Morning";
+        })[0] || null;
+    	const lunchMenu = menuList.filter(menu => {
+            const menuDate = new Date(menu.timeStamp);
+            return menuDate.getDate() === selectedDate.getDate() &&
+            menuDate.getMonth() === selectedDate.getMonth() &&
+            menuDate.getFullYear() === selectedDate.getFullYear() &&
+            menu.type == "Lunch";
+        })[0] || null;
+
+    	if(morningMenu) {
+    		const morningMenuListElem = document.getElementById('morning-menu-list');
+    		morningMenu.items.forEach(item => {
+    			
+    		});
+    		const addItemElement = document.createElement("div");
+    		addItemElement.innerHTML = `<div class="list">
+    			<div class="quantity">+ Add Item</div>
+    	    </div>
+			`;
+    		morningMenuListElem.append(addItemElement);
+    	}
+    };
+    
+	// Item Manager
+	let selectedMenu = "Morning"
+    const showItemManager = () => {
+    	$('.item-manager-model').modal('show');
+    }
+    
     // Event Handlers
     document.getElementById('date-picker').addEventListener('change', (e) => {
-        if (!document.getElementById('pastFutureOrdersTab').classList.contains('active'))
-            return;
         selectedDate = new Date(e.target.value);
+        displayMenus();
     });
-    
-    // 
-    
+    displayMenus();
 </script>
+
+
+<style>
+.list
+{
+  display: flex;
+ flex-wrap: wrap;
+  align-content: space-between ;
+    background-color: #83afd3;
+   padding: 2px;
+   margin-top: 10px;
+   border-radius: 30px;
+   align-items: center;
+}
+
+.item
+{
+    flex: 2;
+    margin-left: 30px;
+    align-items: center;
+    align-self: center;
+    font-size: 18px;
+    margin-top: 10px;
+    
+}
+.quantity
+{
+    flex: 1;
+   align-self: center;
+}
+.price
+{
+    flex:1;
+    align-self: center;
+}
+
+
+.total
+{
+    flex: 1;
+    align-self: center;
+}
+
+
+</style>
