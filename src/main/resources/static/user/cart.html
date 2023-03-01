@@ -9,6 +9,7 @@
 <!-- Optional - Adds useful class to manipulate icon font display -->
 <link rel="stylesheet" href="path/to/pe-icon-set-food/css/helper.css">
 
+
 </head>
    <style>
 .bar
@@ -77,8 +78,7 @@ input[type="number"] {
   padding: 0.5rem;
   border: 2px solid #276683;
   border-radius: 5px;
-  font-size: 1rem;
-  height: 30px;
+  font-size: 1.4rem;
 }
 
 .placeorder
@@ -121,10 +121,10 @@ input[type="number"] {
    
 
 
-<div class="menu" id="menu">
+<div class="menu">
 
     <div class="bar">
-      <h2>Today's Menu</h2>
+      <h2>Your Cart</h2>
     </div>
     <div class="list">
           <div class="item">
@@ -133,15 +133,7 @@ input[type="number"] {
           </div>
           
           
-            <div class="quantity">
-                <label for="quantity">Quantity:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="3" value="1">
-              </div>
-         <div class="price">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control"  id="price" name="price" min="1" value="10"  readonly>
-         </div>
-
+        
          <div class="total">
             <label for="total">Total:</label>
             <input type="number" class="form-control" id="total" name="total" readonly>
@@ -149,11 +141,7 @@ input[type="number"] {
         
     </div>
 
-<div class="placeorder">
-    <div class="placeorder-buttons">
-        <button onclick="placed()" id="order" class="b1">Order</button>   
-        <button class="b2">Cancel</button>  
-    </div>
+
 
 </div>
 
@@ -169,13 +157,6 @@ input[type="number"] {
 
 
 <script>
-
-
-function placed() {
-    document.getElementById("menu").innerHTML =
-      "Thank you For Your Ordering Food";
-}
-
     function increment() {
        document.getElementById('demoInput').stepUp();
     }
