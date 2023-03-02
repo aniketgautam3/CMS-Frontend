@@ -5,7 +5,7 @@
 	document.title = "Profile Page";
     const uId = 1;
     // Fetch and display pastOrders
-    const url = `http://localhost:8080/getorders/user/${uId}`;
+    const url = `http://localhost:8080/order/getorders/${uId}`;
     const pastOrdersElem = document.getElementById('pastOrders');
     fetch(url).then(async res => {
         const responseJSON = await res.json();
