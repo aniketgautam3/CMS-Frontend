@@ -44,7 +44,7 @@
                 <div class="card mt-2">
                 <div class="card-header">
                     <span class="card-subtitle text-muted float-start">Status: <span class="${order.status != 'Delivered' ? 'text-danger' : 'text-success'}">${order.status}</span></span>
-                    <span class="card-subtitle text-muted float-end">Order ID: ${order.id} at ${order.timeStamp}</span>
+                    <span class="card-subtitle text-muted float-end">Order ID: ${order.id} at ${new Date(order.timeStamp).toDateString()}</span>
                 </div>
                 <div class="card-body">
                     <b>Order Type:</b> ${order.orderType} <br/>
