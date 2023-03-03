@@ -1,23 +1,36 @@
 <div class="d-flex justify-content-end mt-2 me-4">
   <input type="date" id="date-picker" class="col-3" />
 </div>
-<div id="morning-menu-list" class="container-fluid mt-3">
+<div class="card shadow-sm mt-4">
+  <div class="card-title p-3">
+    <h4>Breakfast Menu</h4>
+  </div>
+  <div id="breakfast-menu-list" class="card-body container-fluid">
+  </div>
 </div>
-<div id="evening-menu-list" class="container-fluid mt-3"></div>
+<div class="card shadow-sm mt-4">
+  <div class="card-title p-3">
+    <h4>Evening Menu</h4>
+  </div>
+  <div id="evening-menu-list" class="container-fluid"></div>
+</div>
+</div>
 
 <div class="modal fade item-manager-model" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Items Manager</h5>
-		<button type="button" class="btn-close" onclick="$('.item-manager-model').modal('hide');" aria-label="Close"></button>
+        <button type="button" class="btn-close" onclick="$('.item-manager-model').modal('hide');"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body item-manager-model-body">
         ...
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="$('.item-manager-model').modal('hide');">Close</button>
-        <button type="button" class="btn btn-primary" onclick="addSelectedItemsToMenu()">Add Selected items to menu</button>
+        <button type="button" class="btn btn-primary" onclick="addSelectedItemsToMenu()">Add Selected items to
+          menu</button>
       </div>
     </div>
   </div>
@@ -28,7 +41,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Create Item</h5>
-		<button type="button" class="btn-close" onclick="$('.create-item-model').modal('hide');" aria-label="Close"></button>
+        <button type="button" class="btn-close" onclick="$('.create-item-model').modal('hide');"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body create-item-model-body">
         Item Name: <input type="text" id="item-name" class="form-control" /><br>
@@ -37,7 +51,7 @@
         Item Type: <select id="item-type" class="form-control">
           <option value="0">Vegetarian</option>
           <option value="1">Non-Vegetarian</option>
-          </select>
+        </select>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="$('.create-item-model').modal('hide');">Close</button>
@@ -48,22 +62,22 @@
 </div>
 
 <script>
-/***
- * TODO:
-	 - Rearange Code
-	 - Correct Design
-	 - Delete Items (maybe not - bad idea)
-	 - Preselect added items in menu
-	 - Filter function??
- */
+  /***
+   * TODO:
+     - Rearange Code
+     - Correct Design
+     - Delete Items (maybe not - bad idea)
+     - Preselect added items in menu
+     - Filter function??
+   */
   document.title = "Menu Management";
 
-  const menuList = [	// menus of the day
+  let menuList = [	// menus of the day
     {
       "id": 5,
       "approval": "Pending",
-      "type": "Morning",
-      "timeStamp": "2023-03-02T15:25:36.000+00:00",
+      "type": "Breakfast",
+      "date": "2023-03-02T15:25:36.000+00:00",
       "items": [{
         "id": 5,
         "itemType": 1,
@@ -92,29 +106,34 @@
   let selectedDate = new Date(); // Today's date
   const today = new Date();
   document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
-  let morningMenu, lunchMenu;
-  
+  let breakfastMenu, lunchMenu;
+  let selectedMenuType = "Breakfast";
   // -- Menu Management Methods --
   const displayMenus = async () => {
-    morningMenu = menuList.filter(menu => {
-      const menuDate = new Date(menu.timeStamp);
+    menuList = await fetch(`http://localhost:8080/menu/getbydate/${selectedDate.toISOString().slice(0, 10)}`);
+    try { menuList = await menuList.json(); }
+    catch (e) { menuList = []; }
+
+    breakfastMenu = menuList.filter(menu => {
+      const menuDate = new Date(menu.date);
+      console.log(menuDate)
       return menuDate.getDate() === selectedDate.getDate() &&
         menuDate.getMonth() === selectedDate.getMonth() &&
         menuDate.getFullYear() === selectedDate.getFullYear() &&
-        menu.type == "Morning";
+        menu.menuType == "Breakfast";
     })[0] || null;
     lunchMenu = menuList.filter(menu => {
-      const menuDate = new Date(menu.timeStamp);
+      const menuDate = new Date(menu.date);
       return menuDate.getDate() === selectedDate.getDate() &&
         menuDate.getMonth() === selectedDate.getMonth() &&
         menuDate.getFullYear() === selectedDate.getFullYear() &&
-        menu.type == "Lunch";
+        menu.menuType == "Lunch";
     })[0] || null;
 
-    if (morningMenu) {
-      const morningMenuListElem = document.getElementById('morning-menu-list');
-      morningMenuListElem.innerHTML = '';
-      morningMenu.items.forEach(item => {
+    if (breakfastMenu) {
+      const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
+      breakfastMenuListElem.innerHTML = '';
+      breakfastMenu.items.forEach(item => {
         const itemElem = document.createElement('div');
         itemElem.classList.add('list');
         itemElem.classList.add('px-4');
@@ -132,33 +151,57 @@
             ${item.price}
           </div>
           <div>
-            <a href="#" onclick="deleteItemFromMenu(${item.id}, 'Morning');">Delete</a>
+            <a href="#" onclick="selectedMenu = 'Breakfast'; deleteItemFromMenu(${item.id});">Delete</a>
           </div>
         `;
-        morningMenuListElem.append(itemElem);
+        breakfastMenuListElem.append(itemElem);
       });
       const addItemElement = document.createElement("div");
-      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenu = 'Morning'; showItemManager();">
+      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenu = 'Breakfast'; showItemManager();">
     			<div>+ Add Item to Menu</div>
     	    </div>
 			`;
-      morningMenuListElem.append(addItemElement);
+      breakfastMenuListElem.append(addItemElement);
     } else {
-      const morningMenuListElem = document.getElementById('morning-menu-list');
-      morningMenuListElem.innerHTML = `<a href="#" onclick="createNewMenu('Morning');">Create New Menu</a>`;
+      const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
+      breakfastMenuListElem.innerHTML = `
+      <div class="d-flex justify-content-center">
+        No breakfast menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Breakfast'; createNewMenu();" class="text-center">Create New Menu</a>?
+      </div>`;
     }
   };
-  
+  createNewMenu = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/menu/addmenu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "date": selectedDate.toISOString().slice(0, 10),
+            "menuType" : selectedMenuType
+        })
+      });
+      if (res.status === 200) {
+        displayMenus();
+      }
+      else {
+        throw res;
+      }
+    } catch (e) {
+      alert("Error creating menu");
+    }
+  }
+
   // Event Handlers
   document.getElementById('date-picker').addEventListener('change', (e) => {
     selectedDate = new Date(e.target.value);
     displayMenus();
   });
-  displayMenus(); //TODO: Put this inside then() of fetch menu req
+  displayMenus();
 
 
   // -- Item Manager Model Methods -- 
-  let selectedMenuType = "Morning";
   const showItemManager = async () => {
     $('.item-manager-model').modal('show');
     // Load items from server
@@ -201,7 +244,9 @@
     selectedItems.forEach(item => {
       selectedItemsIds.push(item.value);
     });
-    const selectedMenu = selectedMenuType === "Morning" ? morningMenu : lunchMenu;
+    if (selectedItemsIds.length == 0) return;
+
+    const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
     const response = await fetch(`http://localhost:8080/menu/additemstomenu/${selectedMenu.id}/${selectedItemsIds.join(",")}`, {
       method: 'POST',
       headers: {
@@ -216,8 +261,8 @@
     }
   }
 
-  const deleteItemFromMenu = async (itemId, menuType) => {
-    const selectedMenu = menuType === "Morning" ? morningMenu : lunchMenu;
+  const deleteItemFromMenu = async (itemId) => {
+    const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
     const response = await fetch(`http://localhost:8080/menu/removefrommenu/${selectedMenu.id}/${itemId}`, {
       method: 'POST',
       headers: {
@@ -275,14 +320,14 @@
     border-radius: 30px;
     align-items: center;
   }
-  
+
   .clickable-list:hover {
-  	background-color: #759DBD;
-  	cursor: pointer;
+    background-color: #759DBD;
+    cursor: pointer;
   }
-  
+
   .clickable-list {
-  	font-weight: bold;
+    font-weight: bold;
   }
 
   .item {

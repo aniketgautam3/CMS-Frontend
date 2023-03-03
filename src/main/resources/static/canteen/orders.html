@@ -19,17 +19,12 @@
     const today = new Date();
     document.getElementById('date-picker').value = (new Date(today - (24*60*60*1000))).toISOString().substr(0, 10); // set the default date of date picker to yesterday
 
-    let orders = [
-        {"id":1,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-28T15:25:36.000+00:00","feedBack":null,"items":[]},
-        {"id":2,"status":"Pending","orderType":"Lunch","timeStamp":"2023-02-27T15:25:36.000+00:00","feedBack":null,"items":[]},
-        {"id":3,"status":"Pending","orderType":"Lunch","timeStamp":"2023-03-01T15:25:36.000+00:00","feedBack":null,"items":[]},
-        {"id":4,"status":"Pending","orderType":"Lunch","timeStamp":"2023-03-01T15:25:36.000+00:00","feedBack":null,"items":[]}
-    ];
+    let orders = [];
     
     const displayOrdersList = () => {
         const ordersListElem = document.getElementById('orders-list');
         const filteredOrders = orders.filter(order => {
-            const orderDate = new Date(order.timeStamp);
+            const orderDate = new Date(order.orderDelivered);
             return orderDate.getDate() === selectedDate.getDate() &&
                 orderDate.getMonth() === selectedDate.getMonth() &&
                 orderDate.getFullYear() === selectedDate.getFullYear();
@@ -39,12 +34,12 @@
         if(filteredOrders.length == 0) ordersListElem.innerHTML = 'No orders on this day.';
         filteredOrders.forEach((order) => {
             const orderElement = document.createElement("div");
-            const orderDate = new Date(order.timeStamp);
+            const orderDate = new Date(order.orderDelivered);
             orderElement.innerHTML = `
                 <div class="card mt-2">
                 <div class="card-header">
                     <span class="card-subtitle text-muted float-start">Status: <span class="${order.status != 'Delivered' ? 'text-danger' : 'text-success'}">${order.status}</span></span>
-                    <span class="card-subtitle text-muted float-end">Order ID: ${order.id} at ${new Date(order.timeStamp).toDateString()}</span>
+                    <span class="card-subtitle text-muted float-end">Order ID: ${order.id} at ${new Date(order.orderDelivered).toDateString()}</span>
                 </div>
                 <div class="card-body">
                     <b>Order Type:</b> ${order.orderType} <br/>
