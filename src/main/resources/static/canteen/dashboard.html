@@ -6,7 +6,7 @@
 				<div class="row align-items-center">
 					<div class="col-8">
 						<h4 style="color:#01a9ac" class="f-w-bold" id="total-expenditure">₹ Loading..</h4>
-						<h6 class="text-muted fw-lighter m-b-0" >Total Expenditure for Month</h6>
+						<h6 class="text-muted fw-lighter m-b-0">Total Expenditure for Month</h6>
 					</div>
 					<div class="col-4 text-right">
 						<i class="feather icon-bar-chart f-28"></i>
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-xl-6 col-md-12 mt-3">
 		<div class="card shadow">
 			<div class="card-block p-3">
@@ -51,100 +51,148 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-xl-12 mt-3">
 		<div class="card shadow">
 			<div class="card-title p-3">
 				<h6>Day to day Sales</h6>
 			</div>
-		
-			<div class="card-block p-3">
+
+			<div class="card-block p-3" style="min-height:400px">
 				<canvas id="day-to-day-sales-chart"></canvas>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-xl-6 col-md-12 mt-3">
 		<div class="card shadow">
 			<div class="card-title p-3">
 				<h6>Best Selling Item</h6>
 			</div>
-		
-			<div class="card-block p-3">
-				IDK
+
+			<div class="card-block p-3" style="min-height:340px">
+				TODO
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-xl-6 col-md-12 mt-3">
 		<div class="card shadow">
 			<div class="card-title p-3">
 				<h6>Order Completion Breakdown</h6>
 			</div>
-		
-			<div class="card-block p-3">
+
+			<div class="card-block p-3" style="min-height:340px">
 				<canvas id="order-completion-breakdown-chart"></canvas>
 			</div>
 		</div>
 	</div>
-	
+
 </div>
 
 <script>
-// Total Expenditure
-const totalExpenditure = 10000.75;
-document.getElementById("total-expenditure").innerHTML = "₹ " + totalExpenditure;
+	// Total Expenditure
+	const totalExpenditure = 10000.75;
+	document.getElementById("total-expenditure").innerHTML = "₹ " + totalExpenditure;
 
-// Total Sales
-const totalSales = 15000.75;
-document.getElementById("total-sales").innerHTML = "₹ " + totalSales;
+	// Total Sales
+	const totalSales = 15000.75;
+	document.getElementById("total-sales").innerHTML = "₹ " + totalSales;
 
-// Day to day Sales
-const date = [new Date(2020, 1, 1), new Date(2020, 1, 2), new Date(2020, 1, 3), new Date(2020, 1, 4), new Date(2020, 1, 5), new Date(2020, 1, 6), new Date(2020, 1, 7),
-              new Date(2020, 1, 8), new Date(2020, 1, 9), new Date(2020, 1, 10), new Date(2020, 1, 11), new Date(2020, 1, 12), new Date(2020, 1, 13), new Date(2020, 1, 14),
-			  new Date(2020, 1, 15), new Date(2020, 1, 16), new Date(2020, 1, 17), new Date(2020, 1, 18), new Date(2020, 1, 19), new Date(2020, 1, 20), new Date(2020, 1, 21),
-			  new Date(2020, 1, 22), new Date(2020, 1, 23), new Date(2020, 1, 24), new Date(2020, 1, 25), new Date(2020, 1, 26), new Date(2020, 1, 27), new Date(2020, 1, 28),
-			  new Date(2020, 1, 29), new Date(2020, 1, 30), new Date(2020, 1, 31)];
-const sales = [5500, 4500, 400, 4000, 5000, 6000, 7000];
-sales.concat(Array(31 - sales.length).fill(5000));
-const dayToDaySalesChart = new Chart(document.getElementById('day-to-day-sales-chart').getContext('2d'), {
-	type: 'line',
-	data: {
-		labels: date,
-		datasets: [{
-		label: 'Sales',
-		data: sales,
-		borderColor: 'rgb(255, 99, 132)',
-		borderWidth: 1
-		}]
-	},
-	options: {}
-});
+	// Day to day Sales
+	const date = [new Date(2020, 1, 1), new Date(2020, 1, 2), new Date(2020, 1, 3), new Date(2020, 1, 4), new Date(2020, 1, 5), new Date(2020, 1, 6), new Date(2020, 1, 7),
+	new Date(2020, 1, 8), new Date(2020, 1, 9), new Date(2020, 1, 10), new Date(2020, 1, 11), new Date(2020, 1, 12), new Date(2020, 1, 13), new Date(2020, 1, 14),
+	new Date(2020, 1, 15), new Date(2020, 1, 16), new Date(2020, 1, 17), new Date(2020, 1, 18), new Date(2020, 1, 19), new Date(2020, 1, 20), new Date(2020, 1, 21),
+	new Date(2020, 1, 22), new Date(2020, 1, 23), new Date(2020, 1, 24), new Date(2020, 1, 25), new Date(2020, 1, 26), new Date(2020, 1, 27), new Date(2020, 1, 28),
+	new Date(2020, 1, 29), new Date(2020, 1, 30), new Date(2020, 1, 31)];
+	let sales = [5500, 4500, 400, 4000, 5000, 6000, 7000];
+	sales = sales.concat(Array(31 - sales.length).fill(5000));
+	const dayToDaySalesChart = new Chart(document.getElementById('day-to-day-sales-chart').getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: date,
+			datasets: [{
+				label: 'Sales',
+				data: sales,
+				borderColor: 'rgb(255, 99, 132)',
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				x: {
+					type: 'timeseries',
+					time: {
+						unit: 'day'
+					},
+					ticks: {
+						maxTicksLimit: 14
+					},
+				},
+				y: {
+					ticks: {
+						callback: function (value, index, ticks) {
+							return '₹' + value;
+						},
+						maxTicksLimit: 10
+					}
+				}
+			},
+			plugins: {
+				tooltip: {
+					callbacks: {
+						label: function (context) {
+							let label = context.dataset.label || '';
+							if (label) {
+								label += ': ';
+							}
+							if (context.parsed.y !== null) {
+								label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(context.parsed.y);
+							}
+							return label;
+						},
+						title: function (context) {
+							// Hacky Code
+							// Convert "Feb 8, 2000, 12:00 p.m." -> "Feb 8, 2000"
+							let title = context[0].label || '';
+							title = title.split(",");
+							title.pop();
+							title = title.join(",");
+							return title;
+						}
+					}
+				}
+			},
+			responsive: true,
+			maintainAspectRatio: false
+		}
+	});
 
-// Order Completion Breakdown
-const orderCompletionBreakdown = {
-	"Delivered": 10,
-	"Cancelled": 5,
-	"Not Delivered": 3
-};
-const chart = new Chart(document.getElementById('order-completion-breakdown-chart').getContext('2d'), {
-  type: 'pie',
-  data: {
-    labels: ["Delivered", "Cancelled", "Not Delivered"],
-    datasets: [{
-      label: 'Order Completion Breakdown',
-      data: [orderCompletionBreakdown["Delivered"], orderCompletionBreakdown["Cancelled"], orderCompletionBreakdown["Not Delivered"]],
-      backgroundColor: [
-        'rgb(0, 204, 0)',
-        'rgb(255, 0, 0)',
-        'rgb(255, 205, 86)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    rotation: (0 * Math.PI),
-	responsive: true
-  }
-});
+	// Order Completion Breakdown
+	const orderCompletionBreakdown = {
+		"Delivered": 10,
+		"Cancelled": 5,
+		"Not Delivered": 3
+	};
+	const chart = new Chart(document.getElementById('order-completion-breakdown-chart').getContext('2d'), {
+		type: 'pie',
+		data: {
+			labels: ["Delivered", "Cancelled", "Not Delivered"],
+			datasets: [{
+				label: 'Order Completion Breakdown',
+				data: [orderCompletionBreakdown["Delivered"], orderCompletionBreakdown["Cancelled"], orderCompletionBreakdown["Not Delivered"]],
+				backgroundColor: [
+					'rgb(0, 204, 0)',
+					'rgb(255, 0, 0)',
+					'rgb(255, 205, 86)'
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			rotation: (180 * Math.PI),
+			responsive: true,
+			maintainAspectRatio: false
+		}
+	});
 </script>
