@@ -3,15 +3,17 @@
 <div id="pastOrders"></div>
 <script>
 	document.title = "Profile Page";
-    const uId = 1;
+    
     // Fetch and display pastOrders
+    const uId = window.location.pathname.split("/").pop();
     const url = `http://localhost:8080/order/getorders/${uId}`;
     const pastOrdersElem = document.getElementById('pastOrders');
     fetch(url).then(async res => {
         const responseJSON = await res.json();
         console.log(responseJSON);
-		if (!Arrays.isArray(responseJSON) || responseJSON.length == 0) {
+		if (!Array.isArray(responseJSON) || responseJSON.length == 0) {
 			pastOrdersElem.innerHTML = `No order placed yet`;
+            return;
 		}
         responseJSON.forEach((order) => {
             const orderElement = document.createElement("div");
@@ -24,7 +26,7 @@
                 <div class="card-body">
                     <b>Order Type:</b> ${order.orderType} <br/>
                     <b>Items:</b> <br/> 
-                    ${order.items.length === 0 ? "None" : order.items.join(", ")} <br/>
+                    ${order.cartItems.length === 0 ? "None" : order.cartItems.join(", ")} <br/>
                     <b>Feedback:</b> ${order.feedBack ?? "N/A"}
                 </div>
                 </div>
