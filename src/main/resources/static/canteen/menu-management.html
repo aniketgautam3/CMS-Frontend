@@ -10,10 +10,9 @@
 </div>
 <div class="card shadow-sm mt-4">
   <div class="card-title p-3">
-    <h4>Evening Menu</h4>
+    <h4>Lunch Menu</h4>
   </div>
-  <div id="evening-menu-list" class="container-fluid"></div>
-</div>
+  <div id="lunch-menu-list" class="container-fluid"></div>
 </div>
 
 <div class="modal fade item-manager-model" tabindex="-1" role="dialog" aria-hidden="true">
@@ -37,7 +36,7 @@
 </div>
 
 <div class="modal fade create-item-model" tabindex="2" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Create Item</h5>
@@ -45,9 +44,9 @@
           aria-label="Close"></button>
       </div>
       <div class="modal-body create-item-model-body">
-        Item Name: <input type="text" id="item-name" class="form-control" /><br>
-        Item Price: <input type="number" id="item-price" class="form-control" /><br>
-        Item Default Quantity: <input type="number" id="item-quantity" class="form-control" /><br>
+        Item Name: <input type="text" id="item-name" class="form-control" placeholder="Veg Biriyani" /><br>
+        Item Price: <input type="number" id="item-price" class="form-control" value="10"/><br>
+        Item Default Quantity: <input type="number" id="item-quantity" class="form-control" min="1" value="1" /><br>
         Item Type: <select id="item-type" class="form-control">
           <option value="0">Vegetarian</option>
           <option value="1">Non-Vegetarian</option>
@@ -64,10 +63,7 @@
 <script>
   /***
    * TODO:
-     - Rearange Code
-     - Correct Design
      - Delete Items (maybe not - bad idea)
-     - Preselect added items in menu
      - Filter function??
    */
   document.title = "Menu Management";
@@ -122,14 +118,6 @@
         menuDate.getFullYear() === selectedDate.getFullYear() &&
         menu.menuType == "Breakfast";
     })[0] || null;
-    lunchMenu = menuList.filter(menu => {
-      const menuDate = new Date(menu.date);
-      return menuDate.getDate() === selectedDate.getDate() &&
-        menuDate.getMonth() === selectedDate.getMonth() &&
-        menuDate.getFullYear() === selectedDate.getFullYear() &&
-        menu.menuType == "Lunch";
-    })[0] || null;
-
     if (breakfastMenu) {
       const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
       breakfastMenuListElem.innerHTML = '';
@@ -151,13 +139,13 @@
             ${item.price}
           </div>
           <div>
-            <a href="#" onclick="selectedMenu = 'Breakfast'; deleteItemFromMenu(${item.id});">Delete</a>
+            <a href="#" onclick="selectedMenuType = 'Breakfast'; deleteItemFromMenu(${item.id});">Delete</a>
           </div>
         `;
         breakfastMenuListElem.append(itemElem);
       });
       const addItemElement = document.createElement("div");
-      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenu = 'Breakfast'; showItemManager();">
+      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenuType = 'Breakfast'; showItemManager();">
     			<div>+ Add Item to Menu</div>
     	    </div>
 			`;
@@ -169,6 +157,53 @@
         No breakfast menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Breakfast'; createNewMenu();" class="text-center">Create New Menu</a>?
       </div>`;
     }
+
+    lunchMenu = menuList.filter(menu => {
+      const menuDate = new Date(menu.date);
+      return menuDate.getDate() === selectedDate.getDate() &&
+        menuDate.getMonth() === selectedDate.getMonth() &&
+        menuDate.getFullYear() === selectedDate.getFullYear() &&
+        menu.menuType == "Lunch";
+    })[0] || null;
+    if (lunchMenu) {
+      const lunchMenuListElem = document.getElementById('lunch-menu-list');
+      lunchMenuListElem.innerHTML = '';
+      lunchMenu.items.forEach(item => {
+        const itemElem = document.createElement('div');
+        itemElem.classList.add('list');
+        itemElem.classList.add('px-4');
+        itemElem.classList.add('justify-content-between');
+        itemElem.innerHTML = `
+          <div style="width:200px">
+            <p>${item.name}</p>
+          </div>
+          <div>
+            Recomended Quantity:<br>
+            ${item.quantity}
+          </div>
+          <div>
+            Price:<br>
+            ${item.price}
+          </div>
+          <div>
+            <a href="#" onclick="selectedMenuType = 'Lunch'; deleteItemFromMenu(${item.id});">Delete</a>
+          </div>
+        `;
+        lunchMenuListElem.append(itemElem);
+      });
+      const addItemElement = document.createElement("div");
+      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenuType = 'Lunch'; showItemManager();">
+    			<div>+ Add Item to Menu</div>
+    	    </div>
+      `;
+      lunchMenuListElem.append(addItemElement);
+    } else {
+      const lunchMenuListElem = document.getElementById('lunch-menu-list');
+      lunchMenuListElem.innerHTML = `
+      <div class="d-flex justify-content-center">
+        No lunch menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Lunch'; createNewMenu();" class="text-center">Create New Menu</a>?
+      </div>`;
+    }
   };
   createNewMenu = async () => {
     try {
@@ -178,8 +213,8 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            "date": selectedDate.toISOString().slice(0, 10),
-            "menuType" : selectedMenuType
+          "date": selectedDate.toISOString().slice(0, 10),
+          "menuType": selectedMenuType
         })
       });
       if (res.status === 200) {
@@ -237,6 +272,15 @@
     </div>
 	`;
     itemManagerBodyElem.append(createItemElement);
+
+    // Disable the items already in the selected menu
+    const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
+    if (selectedMenu) {
+      selectedMenu.items.forEach(item => {
+        const itemElem = document.getElementById(`item-${item.id}`);
+        itemElem.disabled = true;
+      });
+    }
   }
   const addSelectedItemsToMenu = async () => {
     const selectedItems = document.querySelectorAll('input[name="item-selected"]:checked');
@@ -256,6 +300,7 @@
     if (response.status === 200) {
       $('.item-manager-model').modal('hide');
       displayMenus();
+      selectedMenu.scrollIntoView();
     } else {
       alert('Error adding items to menu');
     }
@@ -271,6 +316,7 @@
     });
     if (response.status === 200) {
       displayMenus();
+      selectedMenu.scrollIntoView();
     } else {
       alert('Error deleting item from menu');
     }
