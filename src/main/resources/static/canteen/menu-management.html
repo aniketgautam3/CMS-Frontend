@@ -154,7 +154,7 @@
       const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
       breakfastMenuListElem.innerHTML = `
       <div class="d-flex justify-content-center">
-        No breakfast menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Breakfast'; createNewMenu();" class="text-center">Create New Menu</a>?
+        No breakfast menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Breakfast'; createNewMenu();" class="text-center" style="display: contents;">Create New Menu</a>?
       </div>`;
     }
 
@@ -201,7 +201,7 @@
       const lunchMenuListElem = document.getElementById('lunch-menu-list');
       lunchMenuListElem.innerHTML = `
       <div class="d-flex justify-content-center">
-        No lunch menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Lunch'; createNewMenu();" class="text-center">Create New Menu</a>?
+        No lunch menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Lunch'; createNewMenu();" class="text-center" style="display: contents;">Create New Menu</a>?
       </div>`;
     }
   };
