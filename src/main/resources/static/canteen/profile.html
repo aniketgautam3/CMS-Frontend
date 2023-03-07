@@ -2,18 +2,21 @@
 <h4>Past Orders:</h4>
 <div id="pastOrders"></div>
 <script>
+	document.title = "Profile Page";
     const uId = 1;
     // Fetch and display pastOrders
-    const url = `http://localhost:8080/getorders/user/${uId}`;
+    const url = `http://localhost:8080/order/getorders/${uId}`;
     const pastOrdersElem = document.getElementById('pastOrders');
     fetch(url).then(async res => {
         const responseJSON = await res.json();
         console.log(responseJSON);
-        console.log(responseJSON);
+		if (!Arrays.isArray(responseJSON) || responseJSON.length == 0) {
+			pastOrdersElem.innerHTML = `No order placed yet`;
+		}
         responseJSON.forEach((order) => {
             const orderElement = document.createElement("div");
             orderElement.innerHTML = `
-                <div class="card">
+                <div class="card mt-2">
                 <div class="card-header">
                     <span class="card-subtitle text-muted float-start">Status: <span class="${order.status != 'Delivered' ? 'text-danger' : 'text-success'}">${order.status}</span></span>
                     <span class="card-subtitle text-muted float-end">Order ID: ${order.id} at ${order.timeStamp}</span>

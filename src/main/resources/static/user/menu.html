@@ -1,222 +1,164 @@
 <!DOCTYPE html>
+<html lang="en">
 
-
-
-<html>
 <head>
-    <link rel="stylesheet" href="path/to/pe-icon-set-food/css/pe-icon-set-food.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Today Menu</title>
+	<link rel="stylesheet" href="./menu.css">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
+		rel="stylesheet">
+	
 
-<!-- Optional - Adds useful class to manipulate icon font display -->
-<link rel="stylesheet" href="path/to/pe-icon-set-food/css/helper.css">
 
-</head>
-   <style>
-.bar
-{
-    background-color: #0b4d83;
-   padding: 5px;
-   text-align: center;
 
-  
-}
-h2
-{
-    color: aliceblue;
-    font-size: 50px;
-}
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 
-.list
-{
-  display: flex;
- flex-wrap: wrap;
-  align-content: space-between ;
-    background-color: #83afd3;
-   padding: 2px;
-   
-   margin-top: 10px;
-   border-radius: 30px;
-   align-items: center;
- 
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script
+	  src="https://code.jquery.com/jquery-3.6.3.min.js"
+	  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+	  crossorigin="anonymous"></script>
+		
+		
 
-}
+    </head>
 
-.item
-{
-    flex: 2;
-    margin-left: 30px;
-    align-items: center;
-    align-self: center;
-    font-size: 18px;
-    margin-top: 10px;
+	<body>
+<div>
+	<div class="page-title">Today Menu</div>
+	<div class="page-desc">Add items to your cart</div>
+
+
+	<div class="navbar">
+		<a class="active tag" href="#lunch" >Lunch</a>
+		<a href="#breakfast" class="tag">Breakfast</a>
+	</div>
     
-}
-.quantity
-{
-    flex: 1;
-   align-self: center;
 
 
-}
-.price
-{
-    flex:1;
-    align-self: center;
+	<div class="type d-flex justify-content-end my-3 ">
+		<input class="type-veginput" type="radio" name="type-input" id="type-veginput" value="veg" checked>
+		<label class="type-veglabel ms-2 me-4" for="type-veginput">
+			Vegetarian
+		  </label>
 
-}
+		  <input class="type-nonveginput" type="radio" name="type-input" id="type-nonveginput" value="nonveg">
+		<label class="type-nonveglabel ms-2 me-4" for="type-nonveginput">
+			Non-Vegetarian
+		  </label>
 
+	</div>
 
-.total
-{
-    flex: 1;
-    align-self: center;
+	<div class="maincontainer" id="maincontainer">	
 
-}
-
-input[type="number"] {
-    width: 100px;
-  padding: 0.5rem;
-  border: 2px solid #276683;
-  border-radius: 5px;
-  font-size: 1rem;
-  height: 30px;
-}
-
-.placeorder
-{
-    margin-top: 10px;
-  
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-}
-
-.b1 {   
-            background-color:#0b4d83;
-            width: 200px;
-            height: 50px;
-            border: #83afd3;  
-            border-radius:30px; 
-          margin-top: 10px;
-            color: #e4f3ff;
-            font-size: 25px;
-        }   
-.b2
-{
-    background-color:#0b4d83;
-            width: 200px;
-            height: 50px;
-            border: #83afd3;  
-            border-radius:30px; 
-          margin-top: 10px;
-            color: #e4f3ff;
-            font-size: 25px;
-
-
-}
-.sumtotal
-{
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  font-size: 27px;
-  text-transform: uppercase;
-  font-weight: bold;
-  
-
-}
-
-   </style>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Menu</title>
-   
-
-
-<div class="menu" id="menu">
-
-    <div class="bar">
-      <h2>Today's Menu</h2>
-    </div>
-    <div class="list">
-          <div class="item"> 
-          <p> &#127858; Dal</p>
-          </div>
-          
-            <div class="quantity">
-                <label for="quantity">Quantity:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="3" value="1">
-              </div>
-         <div class="price">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control"  id="price" name="price" min="1" value="10"  readonly>
-         </div>
-
-         <div class="total">
-            <label for="total">Total:</label>
-            <input type="number" class="form-control" id="total" name="total" readonly>
-          </div>
-        
-    </div>
-
-
-    <div class="sumtotal">
-           <div>
-      <a for="total">Total:</a></div>
-    <div><input type="number" class="form-control" id="sumtotal" name="sumtotal" readonly></div>
-    </div>
-<div class="placeorder">
-    <div class="placeorder-buttons">
-        <button onclick="placed()" id="order" class="b1">Order</button>   
-        <button class="b2">Cancel</button>  
-    </div>
-
+		<div class="menu-section" id="lunch">
+			<h1>Lunch Menu</h1>
+			
+		
+	<div class="content-bar">
+		<div class="itemid">#0000</div>
+		<div class="itemtitle">Socks Red</div>
+		<div class="itemprice">$19.99 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0001</div>
+		<div class="itemtitle">Socks Gray</div>
+		<div class="itemprice">$19.99 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0002</div>
+		<div class="itemtitle">Socks Black</div>
+		<div class="itemprice">$19.99 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0003</div>
+		<div class="itemtitle">Socks White</div>
+		<div class="itemprice">$19.99 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0004</div>
+		<div class="itemtitle">Clean Spray</div>
+		<div class="itemprice">$7.99 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0005</div>
+		<div class="itemtitle">Filter</div>
+		<div class="itemprice">$34.78 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
+	<div class="content-bar">
+		<div class="itemid">#0006</div>
+		<div class="itemtitle">Green Hat</div>
+		<div class="itemprice">$22.00 ea</div>
+		
+		<div class="btncontainer">
+			<button class="quantity-button" data-action="decrease">-</button>
+            <input type="text" class="quantity-input" value="0">
+            <button class="quantity-button" data-action="increase">+</button>
+			<button class="add-button">Add</button></td>
+		</div>
+	</div>
 </div>
 
 
-
-
+<div class="menu-section" id="breakfast" style="display:none">
+	<h1>Breakfast Menu</h1>
+	
+</div>
+	
+	</div>
 
 </div>
-    
+</div>
 
 
-
-
-
-<script>
-
-
-function placed() {
-    document.getElementById("menu").innerHTML =
-      "Thank you For Your Ordering Food";
-}
-
-    function increment() {
-       document.getElementById('demoInput').stepUp();
-    }
-    function decrement() {
-       document.getElementById('demoInput').stepDown();
-    }
-
-
-
-    const quantityInput = document.getElementById('quantity');
-const priceInput = document.getElementById('price');
-const totalInput = document.getElementById('total');
-
-function updateTotal() {
-  const quantity = parseInt(quantityInput.value);
-  const price = parseInt(priceInput.value);
-  const total = quantity * price;
-  totalInput.value = isNaN(total) ? '' : total;
-}
-
-quantityInput.addEventListener('change', updateTotal);
-priceInput.addEventListener('change', updateTotal);
- </script>
-<body>
-    
+<script type="text/javascript" src="menu.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </body>
+
 </html>

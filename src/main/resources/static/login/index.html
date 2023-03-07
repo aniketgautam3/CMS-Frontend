@@ -23,7 +23,7 @@ padding: 0;
 
 body{
    font-family: 'Oswald', sans-serif;
-   background: url(bg.jpg) ;
+   background-image:url("bg.jpg") ;
    background-position: center;
    background-size: cover;
 }
@@ -103,26 +103,30 @@ h2{
 
   </style>
 <body>
+<div class="login-container">
  <div class="form-box">
 <h2>LOGIN PAGE</h2>
   <form>
     <div class="input-group">
         <label>Username</label>
-         <input type="text"/><br/>
+         <input type="email" id="email" name="email" required/><br/>
     </div>
     <div class="input-group">
          <label>Password</label>
-         <input type="password"/>
+         <input type="password" id="password" name="password" required/>
     </div>
 
     <div class="login">
-      <button type="submit" >Login &#x2708;</button>
+      <button type="submit" id="login-button">Login &#x2708;</button>
     </div>
          
   </form>
+  </div>
 </div>
 
 
+
+		
 
 </body>
 </html>

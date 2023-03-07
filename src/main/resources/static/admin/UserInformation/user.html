@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>User Management</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./user.css">
+
+</head>
+
+<body>
+	<div class="container-xl">
+		<div class="table-responsive">
+			<div class="table-wrapper">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-sm-5">
+							<h2>User <b>Information</b></h2>
+						</div>
+						<div class="col-sm-7">
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+								data-target="#exampleModalCenter"><i class="material-icons">&#xE147;</i> <span>Add New
+									User</span></button>
+							<a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Export to
+									Excel</span></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Add User</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="registration-form">
+									<form name="user-form" onsubmit="event.preventDefault();" id="user-form">
+										<div class="form-icon">
+											<span><i class="icon icon-user"></i></span>
+										</div>
+										<div class="form-group">
+											<input type="email" class="form-control item" id="email" placeholder="Email"
+												name="email">
+										</div>
+										<div class="form-group">
+											<input type="password" class="form-control item" id="password"
+												placeholder="Password" name="password">
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control item" id="phone-number"
+												placeholder="Phone Number" name="phoneNumber">
+										</div>
+										<div class="form-group">
+											<input type="file" class="form-control item" id="avatar" name="avatar">
+										</div>
+										<div class="form-group">
+											<select class="form-select" aria-label="Default select example" name="role">
+												<option selected disabled>Role</option>
+												<option value="0">Admin</option>
+												<option value="1">Canteen</option>
+												<option value="2">User</option>
+											</select>
+
+										</div>
+
+									</form>
+									<div class="form-group">
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Close</button>
+											<button type="button" onclick="submit(event)" class="btn btn-primary">Add
+												User</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Date Created</th>
+							<th>Role</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td><a href="#"><img src="#" class="avatar" alt="Avatar"> Michael Holz</a></td>
+							<td>04/10/2013</td>
+							<td>Admin</td>
+							<td><span class="status text-success">&bull;</span> Active</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i
+										class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+										class="material-icons">&#xE5C9;</i></a>
+							</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td><a href="#"><img src="#" class="avatar" alt="Avatar"> Paula Wilson</a></td>
+							<td>05/08/2014</td>
+							<td>Publisher</td>
+							<td><span class="status text-success">&bull;</span> Active</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i
+										class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+										class="material-icons">&#xE5C9;</i></a>
+							</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td><a href="#"><img src="#" class="avatar" alt="Avatar"> Antonio Moreno</a></td>
+							<td>11/05/2015</td>
+							<td>Publisher</td>
+							<td><span class="status text-danger">&bull;</span> Suspended</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i
+										class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+										class="material-icons">&#xE5C9;</i></a>
+							</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td><a href="#"><img src="#" class="avatar" alt="Avatar"> Mary Saveley</a></td>
+							<td>06/09/2016</td>
+							<td>Reviewer</td>
+							<td><span class="status text-success">&bull;</span> Active</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i
+										class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+										class="material-icons">&#xE5C9;</i></a>
+							</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td><a href="#"><img src="#" class="avatar" alt="Avatar"> Martin Sommer</a></td>
+							<td>12/08/2017</td>
+							<td>Moderator</td>
+							<td><span class="status text-warning">&bull;</span> Inactive</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i
+										class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+										class="material-icons">&#xE5C9;</i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="clearfix">
+					<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+					<ul class="pagination">
+						<li class="page-item disabled"><a href="#">Previous</a></li>
+						<li class="page-item"><a href="#" class="page-link">1</a></li>
+						<li class="page-item"><a href="#" class="page-link">2</a></li>
+						<li class="page-item active"><a href="#" class="page-link">3</a></li>
+						<li class="page-item"><a href="#" class="page-link">4</a></li>
+						<li class="page-item"><a href="#" class="page-link">5</a></li>
+						<li class="page-item"><a href="#" class="page-link">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+		integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="./user.js"></script>
+</body>
+
+</html>
