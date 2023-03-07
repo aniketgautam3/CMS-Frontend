@@ -1,19 +1,13 @@
 <div class="d-flex justify-content-end mt-2 me-4">
   <input type="date" id="date-picker" class="col-3" />
 </div>
-<div class="card shadow-sm mt-4">
-  <div class="card-title p-3">
-    <h4>Breakfast Menu</h4>
-  </div>
-  <div id="breakfast-menu-list" class="card-body container-fluid">
-  </div>
+<ul class="nav nav-pills justify-content-center nav-fill mt-4" role="tablist">
+  <li class="nav-item"> <a class="nav-link active" id="breakfastTab" href="#">Breakfast Menu</a> </li>
+  <li class="nav-item"> <a class="nav-link" id="lunchTab" href="#">Lunch Menu</a> </li>
+</ul>
+<div id="menu-list" class="tab-pane fade show active">
 </div>
-<div class="card shadow-sm mt-4">
-  <div class="card-title p-3">
-    <h4>Lunch Menu</h4>
-  </div>
-  <div id="lunch-menu-list" class="card-body container-fluid"></div>
-</div>
+
 
 <div class="modal fade item-manager-model" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -45,7 +39,7 @@
       </div>
       <div class="modal-body create-item-model-body">
         Item Name: <input type="text" id="item-name" class="form-control" placeholder="Veg Biriyani" /><br>
-        Item Price: <input type="number" id="item-price" class="form-control" value="10"/><br>
+        Item Price: <input type="number" id="item-price" class="form-control" value="10" /><br>
         Item Default Quantity: <input type="number" id="item-quantity" class="form-control" min="1" value="1" /><br>
         Item Type: <select id="item-type" class="form-control">
           <option value="0">Vegetarian</option>
@@ -68,35 +62,7 @@
    */
   document.title = "Menu Management";
 
-  let menuList = [	// menus of the day
-    {
-      "id": 5,
-      "approval": "Pending",
-      "type": "Breakfast",
-      "date": "2023-03-02T15:25:36.000+00:00",
-      "items": [{
-        "id": 5,
-        "itemType": 1,
-        "price": 40,
-        "quantity": 3,
-        "name": "Chicken curry"
-      },
-      {
-        "itemType": 0,
-        "price": 40,
-        "quantity": 3,
-        "imagePath": "",
-        "name": "Dahi"
-      },
-      {
-        "id": 8,
-        "itemType": 1,
-        "price": 40,
-        "quantity": 3,
-        "name": "Fish Fry"
-      }]
-    }
-  ];
+  let menuList = [];
 
   // Default values
   let selectedDate = new Date(); // Today's date
@@ -104,8 +70,9 @@
   document.getElementById('date-picker').value = today.toISOString().substr(0, 10); // set the default date of date picker to today
   let breakfastMenu, lunchMenu;
   let selectedMenuType = "Breakfast";
+
   // -- Menu Management Methods --
-  const displayMenus = async () => {
+  const displayMenu = async () => {
     menuList = await fetch(`http://localhost:8080/menu/getbydate/${selectedDate.toISOString().slice(0, 10)}`);
     try { menuList = await menuList.json(); }
     catch (e) { menuList = []; }
@@ -118,46 +85,6 @@
         menuDate.getFullYear() === selectedDate.getFullYear() &&
         menu.menuType == "Breakfast";
     })[0] || null;
-    if (breakfastMenu) {
-      const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
-      breakfastMenuListElem.innerHTML = '';
-      breakfastMenu.items.forEach(item => {
-        const itemElem = document.createElement('div');
-        itemElem.classList.add('list');
-        itemElem.classList.add('px-4');
-        itemElem.classList.add('justify-content-between');
-        itemElem.innerHTML = `
-          <div style="width:200px">
-            <p>${item.name}</p>
-          </div>
-          <div>
-            Recomended Quantity:<br>
-            ${item.quantity}
-          </div>
-          <div>
-            Price:<br>
-            ${item.price}
-          </div>
-          <div>
-            <a href="#" onclick="selectedMenuType = 'Breakfast'; deleteItemFromMenu(${item.id});">Delete</a>
-          </div>
-        `;
-        breakfastMenuListElem.append(itemElem);
-      });
-      const addItemElement = document.createElement("div");
-      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenuType = 'Breakfast'; showItemManager();">
-    			<div>+ Add Item to Menu</div>
-    	    </div>
-			`;
-      breakfastMenuListElem.append(addItemElement);
-    } else {
-      const breakfastMenuListElem = document.getElementById('breakfast-menu-list');
-      breakfastMenuListElem.innerHTML = `
-      <div class="d-flex justify-content-center">
-        No breakfast menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Breakfast'; createNewMenu();" class="text-center" style="display: contents;">Create New Menu</a>?
-      </div>`;
-    }
-
     lunchMenu = menuList.filter(menu => {
       const menuDate = new Date(menu.date);
       return menuDate.getDate() === selectedDate.getDate() &&
@@ -165,10 +92,12 @@
         menuDate.getFullYear() === selectedDate.getFullYear() &&
         menu.menuType == "Lunch";
     })[0] || null;
-    if (lunchMenu) {
-      const lunchMenuListElem = document.getElementById('lunch-menu-list');
-      lunchMenuListElem.innerHTML = '';
-      lunchMenu.items.forEach(item => {
+    const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
+
+    const menuListElem = document.getElementById('menu-list');
+    menuListElem.innerHTML = '';
+    if (selectedMenu) {
+      selectedMenu.items.forEach(item => {
         const itemElem = document.createElement('div');
         itemElem.classList.add('list');
         itemElem.classList.add('px-4');
@@ -186,25 +115,25 @@
             ${item.price}
           </div>
           <div>
-            <a href="#" onclick="selectedMenuType = 'Lunch'; deleteItemFromMenu(${item.id});">Delete</a>
+            <a href="#" onclick="deleteItemFromMenu(${item.id});">Delete</a>
           </div>
         `;
-        lunchMenuListElem.append(itemElem);
+        menuListElem.append(itemElem);
       });
       const addItemElement = document.createElement("div");
-      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="selectedMenuType = 'Lunch'; showItemManager();">
+      addItemElement.innerHTML = `<div class="list justify-content-center clickable-list" onclick="showItemManager();">
     			<div>+ Add Item to Menu</div>
     	    </div>
-      `;
-      lunchMenuListElem.append(addItemElement);
+			`;
+      menuListElem.append(addItemElement);
     } else {
-      const lunchMenuListElem = document.getElementById('lunch-menu-list');
-      lunchMenuListElem.innerHTML = `
+      menuListElem.innerHTML = `
       <div class="d-flex justify-content-center">
-        No lunch menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="selectedMenuType = 'Lunch'; createNewMenu();" class="text-center" style="display: contents;">Create New Menu</a>?
+        No ${selectedMenuType} menu exists for this day.&nbsp;&nbsp;<a href="#" onclick="createNewMenu();" class="text-center" style="display: contents;">Create New Menu</a>?
       </div>`;
     }
   };
+
   createNewMenu = async () => {
     try {
       const res = await fetch('http://localhost:8080/menu/addmenu', {
@@ -218,7 +147,7 @@
         })
       });
       if (res.status === 200) {
-        displayMenus();
+        displayMenu();
       }
       else {
         throw res;
@@ -229,12 +158,27 @@
   }
 
   // Event Handlers
+  displayMenu();
+
   document.getElementById('date-picker').addEventListener('change', (e) => {
     selectedDate = new Date(e.target.value);
-    displayMenus();
+    document.getElementById('breakfastTab').click();  // This will automatically call displayMenu
+    // displayMenu();
   });
-  displayMenus();
 
+  document.getElementById('breakfastTab').addEventListener('click', (e) => {
+    selectedMenuType = 'Breakfast';
+    document.getElementById('breakfastTab').classList.add('active');
+    document.getElementById('lunchTab').classList.remove('active');
+    displayMenu();
+  });
+
+  document.getElementById('lunchTab').addEventListener('click', (e) => {
+    selectedMenuType = 'Lunch';
+    document.getElementById('lunchTab').classList.add('active');
+    document.getElementById('breakfastTab').classList.remove('active');
+    displayMenu();
+  });
 
   // -- Item Manager Model Methods -- 
   const showItemManager = async () => {
@@ -299,8 +243,7 @@
     });
     if (response.status === 200) {
       $('.item-manager-model').modal('hide');
-      displayMenus();
-      selectedMenu.scrollIntoView();
+      displayMenu();
     } else {
       alert('Error adding items to menu');
     }
@@ -315,8 +258,7 @@
       }
     });
     if (response.status === 200) {
-      displayMenus();
-      selectedMenu.scrollIntoView();
+      displayMenu();
     } else {
       alert('Error deleting item from menu');
     }
@@ -351,7 +293,6 @@
       alert('Error creating item');
     }
   }
-
 </script>
 
 

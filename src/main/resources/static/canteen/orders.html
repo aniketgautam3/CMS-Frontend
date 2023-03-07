@@ -80,6 +80,7 @@
     }
 
     // Event Handlers
+    displayOrdersList();
     document.getElementById('date-picker').addEventListener('change', (e) => {
         if (!document.getElementById('pastFutureOrdersTab').classList.contains('active'))
             return;
@@ -101,7 +102,6 @@
         displayOrdersList();
     });
 
-    displayOrdersList();
 
     const markAsDelivered = async (orderId) => {
         const confirmRes = await askConfirm(`Are you sure you want to mark order number ${orderId} as delivered?`);
