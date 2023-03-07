@@ -1,4 +1,6 @@
-<!doctype html>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.io.*, java.util.*, java.net.*, javax.servlet.*, org.springframework.web.util.*" %>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -81,41 +83,40 @@
 
             <main id="main-content" class="col-md-9 ms-sm-auto col-lg-10 px-3 py-2"
                 style="min-height: calc(100vh - 40px);">
-                Loading...
-            </main>
-
-            <script>
-                // Load the main contents
-                const loadMainContent = async () => {
-                    const urlPath = window.location.pathname;
-                    let page = urlPath.match(/^\/(.+)\/?\??/)[1];
-                    const mainContentElem = document.getElementById('main-content');
+                <%
+                    String urlPath = new UrlPathHelper().getOriginatingRequestUri(request);
                     do {
-                        console.log(page);
-                        const fileToLoad = "/" + page + ".html";
-                        const res = await fetch(fileToLoad);
-                        const responseHTML = await res.text();
-                        if (!res.ok || new DOMParser().parseFromString(responseHTML, 'text/html').title.includes("Template")) {
-                            page = page.split("/");
-                            page.pop();
-                            page = page.join("/");
-                            continue;
-                        }
-                        $(mainContentElem).html(responseHTML);
-                        const navLinks = document.querySelectorAll('#sidebar_navigation-list .nav-link');
-                        navLinks.forEach(link => {
-                            if ((link.getAttribute('href') || "").includes(page)) {
-                                link.classList.add('active');
-                            } else {
-                                link.classList.remove('active');
+                        String fileToLoad = urlPath + ".html";
+                        System.out.println(fileToLoad);
+                        URL url = new URL(request.getScheme(), request.getServerName(), request.getServerPort(), fileToLoad);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("GET");
+                        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                            System.out.println("ok");
+                            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                            String inputLine = "", resHTML = "";
+                            while (inputLine != null) {
+                                resHTML += "\n"+inputLine;
+                                inputLine = in.readLine();
                             }
-                        });
-
-                        break;
-                    } while (page != "" && page != "/");
-                };
-
-                loadMainContent();
+                            in.close();
+                            out.println(resHTML);
+                            break;
+                        }
+                        urlPath = urlPath.substring(0, urlPath.lastIndexOf("/"));
+                    } while (!urlPath.equals("") && !urlPath.equals("/"));
+                %>
+            </main>
+            <script>
+                const urlPath = "<%= urlPath %>";
+                const navLinks = document.querySelectorAll('#sidebar_navigation-list .nav-link');
+                navLinks.forEach(link => {
+                    if ((link.getAttribute('href') || "").includes(urlPath)) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
             </script>
         </div>
     </div>

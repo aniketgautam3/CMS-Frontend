@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/canteen/profile/{id}").setViewName("canteenTemplate");
+        registry.addViewController("/canteen/profile/{id:\\d+}").setViewName("canteenTemplate");
         registry.addViewController("/canteen/orders").setViewName("canteenTemplate");
         registry.addViewController("/canteen/dashboard").setViewName("canteenTemplate");
         registry.addViewController("/canteen/menu-management").setViewName("canteenTemplate");
