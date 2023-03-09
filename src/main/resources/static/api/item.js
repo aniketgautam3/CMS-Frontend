@@ -3,7 +3,7 @@ import { AUTH } from "/api/auth.js";
 
 export let ITEM = {};
 
-ITEM.getItems = async () => {
+ITEM.getAllItems = async () => {
     return fetch(`${BASE_URL}/item/getitems`, {
         method: 'GET',
         headers: {
@@ -13,7 +13,7 @@ ITEM.getItems = async () => {
     });
 }
 
-ITEM.getItem = async (itemId) => {
+ITEM.getItemById = async (itemId) => {
     return fetch(`${BASE_URL}/item/getitem/${itemId}`, {
         method: 'GET',
         headers: {

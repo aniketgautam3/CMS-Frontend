@@ -73,8 +73,11 @@
 
   // -- Menu Management Methods --
   const displayMenu = async () => {
-    menuList = await fetch(`http://localhost:8080/menu/getbydate/${selectedDate.toISOString().slice(0, 10)}`);
-    try { menuList = await menuList.json(); }
+    try { 
+      const res = await CMS_API.MENU.getMenuListByDate(selectedDate.toISOString().slice(0, 10));
+      if (res.status == 400) throw "No Menu List for the day";
+      menuList = await res.json(); 
+    }
     catch (e) { menuList = []; }
 
     breakfastMenu = menuList.filter(menu => {
@@ -136,16 +139,7 @@
 
   createNewMenu = async () => {
     try {
-      const res = await fetch('http://localhost:8080/menu/addmenu', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "date": selectedDate.toISOString().slice(0, 10),
-          "menuType": selectedMenuType
-        })
-      });
+      const res = await CMS_API.MENU.addMenu(selectedDate.toISOString().slice(0, 10), selectedMenuType);
       if (res.status === 200) {
         displayMenu();
       }
@@ -186,7 +180,7 @@
     // Load items from server
     const itemManagerBodyElem = document.querySelector('.item-manager-model-body');
     itemManagerBodyElem.innerHTML = '';
-    const items = await fetch('http://localhost:8080/item/getitems').then(res => res.json());
+    const items = await CMS_API.ITEM.getAllItems().then(res => res.json());
     items.forEach(item => {
       const itemElem = document.createElement('div');
       itemElem.classList.add('list');
@@ -235,12 +229,7 @@
     if (selectedItemsIds.length == 0) return;
 
     const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
-    const response = await fetch(`http://localhost:8080/menu/additemstomenu/${selectedMenu.id}/${selectedItemsIds.join(",")}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await CMS_API.MENU.addItemListToMenu(selectedMenu.id, ...selectedItemsIds);
     if (response.status === 200) {
       $('.item-manager-model').modal('hide');
       displayMenu();
@@ -251,12 +240,7 @@
 
   const deleteItemFromMenu = async (itemId) => {
     const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
-    const response = await fetch(`http://localhost:8080/menu/removefrommenu/${selectedMenu.id}/${itemId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await CMS_API.MENU.removeItemFromMenu(selectedMenu.id, itemId);
     if (response.status === 200) {
       displayMenu();
     } else {
@@ -274,18 +258,12 @@
     const itemQuantity = document.getElementById('item-quantity').value;
     const itemPrice = document.getElementById('item-price').value;
     const itemType = document.getElementById('item-type').value;
-    const res = await fetch('http://localhost:8080/item/additem', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const res = await CMS_API.ITEM.addItem({
         name: itemName,
         quantity: itemQuantity,
         price: itemPrice,
         type: itemType
-      })
-    });
+      });
     if (res.status === 200) {
       $('.create-item-model').modal('hide');
       showItemManager();
