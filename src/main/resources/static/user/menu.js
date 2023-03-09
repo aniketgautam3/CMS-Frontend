@@ -79,7 +79,7 @@ async function refreshItemsList() {
           "price": 40.0,
           "itemType": "NonVeg",
           "imagePath": "",
-          "name": "dog biryani"
+          "name": "chicken biryani"
       },
 
       {

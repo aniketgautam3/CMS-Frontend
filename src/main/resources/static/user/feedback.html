@@ -1,176 +1,186 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Feedback</title>
-<style>
+	<title>Minimal Feedback Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+			
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
 
 
-   .container {
-        width: 100%;
-        margin: 10px auto;
-        min-height:100% ;
-        background-color :#ddd8d8;
-     
-        padding: 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
-    h1 {
-        text-align: center;
-    }
-    .feedback-input {
-        margin-top: 40px;
-        width: 100%;
-        height: 100px;
-        text-align: center;
-        border-color: #ddd8d8;
-        border: none;
-        outline:none;
-    }
-    .feedback-input:focus{
-        outline:1px solid grey;
-    }
-    
+		form {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			max-width: 600px;
+			margin: 0 auto;
+		}
 
+		.rating {
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: center;
+			align-items: center;
+		}
 
-    .type
-    {
-               width: 400px;
-               align-self: center;
-    }
-.rate{
-    align-self: center;
-}
-     
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#817b7b;
-}
-.rate:not(:checked) > label:before {
-    content: '★ ';
-}
-.rate > input:checked ~ label {
-    color: #ffc700;    
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;  
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
-}
-.button
-{
-    height: 10px;
-    align-self: center;
-   margin: 20px 0 10px 0;
-       
+		.rating input {
+			display: none;
+		}
 
-}
-.h 
-{
-    margin-top:--5px;
-    margin-left:8px;
-   letter-spacing: 9px;
-    
-}
-</style>
+		.rating label {
+			cursor: pointer;
+			font-size: 50px;
+			color: #ddd;
+		}
+
+		.rating label:hover,
+		.rating label:hover ~ label,
+		.rating input:checked ~ label {
+			color: #ff9800;
+		}
+
+		.rating input:checked ~ label:before {
+			content: '\2605';
+			position: absolute;
+		}
+		.h{
+			margin-top: -15px;
+			display: flex;
+			letter-spacing: 10px;
+			justify-content:center ;
+			margin-left: 10px;
+			font-size: 5px;
+			
+		}
+
+		textarea {
+			width: 100%;
+			height: 100px;
+			padding: 10px;
+			margin-top: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			resize: none;
+			font-size: 16px;
+			font-family: Arial, sans-serif;
+		}
+
+		button[type="submit"] {
+			background-color: #4caf50;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+			margin-top: 20px;
+			transition: background-color 0.2s;
+		}
+
+		button[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.success {
+			background-color: #d4edda;
+			color: #155724;
+			padding: 10px;
+			margin-top: 20px;
+			border-radius: 5px;
+			border: 1px solid #c3e6cb;
+		}
+
+		.error {
+			background-color: #f8d7da;
+			color: #721c24;
+			padding: 10px;
+			margin-top: 20px;
+			border-radius: 5px;
+			border: 1px solid #f5c6cb;
+		}
+
+	</style>
 </head>
 <body>
- <form id="feedback-form">
-    <div class="container" id="con">
-        <h1>How was your food?</h1>
+	<h1>Feedback Form</h1>
+	<form>
+		<div class="rating">
+			<input type="radio" name="rating" id="star5" value="5" />
+			<label for="star5">&#9733;</label>
+			<input type="radio" name="rating" id="star4" value="4" />
+			<label for="star4">&#9733;</label>
+			<input type="radio" name="rating" id="star3" value="3" />
+			<label for="star3">&#9733;</label>
+			<input type="radio" name="rating" id="star2" value="2" />
+      <label for="star2">★</label>
+      <input type="radio" name="rating" id="star1" value="1" />
+      <label for="star1">★</label>
+      </div>
 
+	  <div class="h">
 
-        <div class="rate" >
-            <input type="radio" id="star5" name="rate" value="5" /><label for="star5" title="text">5 stars</label>
-            <input type="radio" id="star4" name="rate" value="4" /><label for="star4" title="text">4 stars</label>
-            <input type="radio" id="star3" name="rate" value="3" /><label for="star3" title="text">3 stars</label>
-            <input type="radio" id="star2" name="rate" value="2" /><label for="star2" title="text">2 stars</label>
-            <input type="radio" id="star1" name="rate" value="1" /> <label for="star1" title="text">1 star</label>
-          </div>
-
-       <div class="h">
-        <h6 >1 2 3 4 5 </h6
-            ></div> 
-
-       
-        <div class="type">
-
-            <input class="feedback-input" placeholder="Please leave your feedback here...">
-        </div>
-         
-
-        <div class="button">
-        <button type="submit">Submit</button>
-    </div>
-    </div>
-    
-    </form>
-
-
-    
+		<h2>1 2 3 4 5</h2>
+	  </div>
+      <textarea id="feedback" name="feedback" placeholder="Enter your feedback here..."></textarea>
+      <button type="submit" id="submit">Submit Feedback</button>
+      <div class="hidden" id="success-message">
+      <p>Thank you for your feedback!</p>
+      </div>
+      <div class="hidden" id="error-message">
+          <p>There was an error submitting your feedback. Please try again.</p>
+      </div>
+  </form>
 <script>
-    
-const feedbackForm = document.querySelector("#feedback-form");
-
-feedbackForm.addEventListener("submit", (event) => {
-    event.preventDefault(); 
-    
-    const ratingInput = document.querySelector('input[name="rate"]:checked');
-    const feedbackInput = document.querySelector(".feedback-input");
-    console.log(feedbackInput);
-
-    if (!ratingInput) {
-      alert("Please select a rating.");
-      return;
-    }
-
-    const feedbackData = {
-    
-      rating: parseInt(ratingInput.value),
-      feedback: feedbackInput.value
-    };
-    
-    
-    const oId = window.location.pathname.split("/").pop();
-    const url = `http://localhost:8080/order/getorders/${oId}`;
-    
-    fetch("http://localhost:8080/order/addfeedback/11", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(feedbackData)
-      })
-      .then(response => {
-        if (response.ok) {
-          alert("Feedback sent successfully!");
-          feedbackForm.reset();
-        } else {
-          alert("An error occurred while sending your feedback.");
-        }
-      })
-      .catch(error => {
-        alert("An error occurred while sending your feedback.");
-      });
-    });
-    
-    </script>
+      const form = document.querySelector('form');
+      const ratingInputs = document.querySelectorAll('input[type="radio"]');
+      const feedbackTextarea = document.querySelector('#feedback');
+      const submitButton = document.querySelector('#submit');
+      const successMessage = document.querySelector('#success-message');
+      const errorMessage = document.querySelector('#error-message');
+      
+      form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const formData = new FormData(form);
+		const data = {};
+		formData.forEach((value, key) => data[key] = value);
+		fetch('submit.php', {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(response => {
+			if (response.ok) {
+				successMessage.classList.remove('hidden');
+				errorMessage.classList.add('hidden');
+				form.reset();
+				ratingInputs.forEach(input => input.checked = false);
+				feedbackTextarea.value = '';
+			} else {
+				successMessage.classList.add('hidden');
+				errorMessage.classList.remove('hidden');
+			}
+		})
+		.catch(error => {
+			console.error(error);
+			successMessage.classList.add('hidden');
+			errorMessage.classList.remove('hidden');
+		})
+	});
+</script>
 </body>
 </html>
+
