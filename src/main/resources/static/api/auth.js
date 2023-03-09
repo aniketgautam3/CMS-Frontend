@@ -11,11 +11,12 @@ AUTH.login = async (username, password) => {
         },
         body: JSON.stringify({ username, password })
     });
+    const resClone = res.clone();
     const resJSON = await res.json();
     if (res.status == 200) {
         setCookie("token", resJSON.token, TOKEN_TIMEOUT);
     }
-    return Promise.resolve(res);    
+    return Promise.resolve(resClone);    
 }
 
 AUTH.getCurrentUser = async () => {
