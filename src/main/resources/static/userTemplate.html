@@ -16,7 +16,11 @@
 	  src="https://code.jquery.com/jquery-3.6.3.min.js"
 	  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
 	  crossorigin="anonymous"></script>
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js"
+      integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="/api/all.js" type="module"></script>
 </head>
 
 <body>
@@ -103,7 +107,9 @@
 	            	} while (page != "" && page != "/");
 				};
 				
-				loadMainContent();
+                $(document).ready(function() {
+                    loadMainContent();
+                });
             </script>
         </div>
     </div>

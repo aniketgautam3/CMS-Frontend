@@ -25,9 +25,8 @@
     // -- Main Functions -- 
     let orders = [];
     const displayOrdersList = async () => {
-        orders = await fetch(`http://localhost:8080/order/getorders`);
+        orders = await CMS_API.ORDER.getAllOrders();
         orders = await orders.json();
-        console.log(JSON.stringify(orders));
 
         const ordersListElem = document.getElementById('orders-list');
         const filteredOrders = orders.filter(order => {
@@ -107,12 +106,7 @@
         const confirmRes = await askConfirm(`Are you sure you want to mark order number ${orderId} as delivered?`);
         if(!confirmRes) return;
 
-        const response = await fetch(`http://localhost:8080/order/updatestatus/${orderId}/1`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await CMS_API.ORDER.updateOrderStatus(orderId, 1);
         if (response.status === 200) {
             displayOrdersList();
             showToast("Successfully marked as delivered.", 3000, 'success');
