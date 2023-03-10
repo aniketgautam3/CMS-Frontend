@@ -96,7 +96,7 @@ CART.removeItemFromCart = async (cartId, cartItemId) => {
     });
 }
 
-CART.clearCart = async (cartId) => {
+CART.clearCartById = async (cartId) => {
     return fetch(`${BASE_URL}/cart/clear/${cartId}`, {
         method: 'POST',
         headers: {
@@ -106,6 +106,17 @@ CART.clearCart = async (cartId) => {
     });
 }
 
+
+CART.clearCurrentUserCart = async () => {
+    let cartId = (await (await AUTH.getCurrentUser()).json()).cartId;
+    return fetch(`${BASE_URL}/cart/clear/${cartId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${await AUTH.getCurrentUserToken()}`
+        }
+    });
+}
 
 // Mount the API
 export let CMS_API = window.CMS_API || {};
