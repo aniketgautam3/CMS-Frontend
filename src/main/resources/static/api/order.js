@@ -23,10 +23,26 @@ ORDER.getOrderByOrderId = async (orderId) => {
     });
 }
 
-ORDER.addOrder = async (orderType) => {
+// ORDER.addOrder = async (orderType) => {
+//     if (typeof orderType === "string")
+//         orderType = orderType == "Lunch" ? 1 : 0;
+//     return fetch(`${BASE_URL}/order/addorders`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${await AUTH.getCurrentUserToken()}`
+//         },
+//         body: JSON.stringify([
+//             { orderType }
+//         ])
+//     });
+// }
+
+ORDER.placeOrderForCurrentUser = async (orderType) => {
     if (typeof orderType === "string")
         orderType = orderType == "Lunch" ? 1 : 0;
-    return fetch(`${BASE_URL}/order/addorders`, {
+    let userId = (await (await AUTH.getCurrentUser()).json()).id;
+    return fetch(`${BASE_URL}/order/placeorder/${userId}/${orderType}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
