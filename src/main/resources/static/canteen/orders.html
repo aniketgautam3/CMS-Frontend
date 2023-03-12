@@ -107,11 +107,12 @@
         if(!confirmRes) return;
 
         const response = await CMS_API.ORDER.updateOrderStatus(orderId, 1);
-        if (response.status === 200) {
+        if (response.status == 200) {
             displayOrdersList();
             showToast("Successfully marked as delivered.", 3000, 'success');
         } else {
-            showToast("Error adding items to menu", 3000, 'danger');
+            const responseJSON = await response.json();
+            showToast(`Error marking order as delivered. Error: ${responseJSON.message}`, 5000, 'danger');
         }
     }
 
@@ -120,6 +121,7 @@
         const toast = document.createElement('div'); 
         toast.classList.add('toast', 'position-fixed', 'bottom-0', 'end-0', 'm-3', `bg-${toastType}`, `text-white`);
         toast.classList.add('toast', 'fade', 'position-fixed', 'bottom-0', 'end-0', 'm-3');
+        toast.setAttribute('style', 'z-index: 1061;');
         toast.setAttribute('role', 'alert');
         toast.setAttribute('aria-live', 'assertive');
         toast.setAttribute('aria-atomic', 'true');

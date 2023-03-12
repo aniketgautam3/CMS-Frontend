@@ -138,16 +138,13 @@
   };
 
   createNewMenu = async () => {
-    try {
-      const res = await CMS_API.MENU.addMenu(selectedDate.toISOString().slice(0, 10), selectedMenuType);
-      if (res.status === 200) {
-        displayMenu();
-      }
-      else {
-        throw res;
-      }
-    } catch (e) {
-      alert("Error creating menu");
+    const response = await CMS_API.MENU.addMenu(selectedDate.toISOString().slice(0, 10), selectedMenuType);
+    if(response.status != 200) {
+      const responseJSON = await response.json();
+      showToast(`Failed to create new menu. Error: ${responseJSON.message}`, 5000, 'danger');
+    }
+    else {
+      displayMenu();
     }
   }
 
@@ -180,7 +177,15 @@
     // Load items from server
     const itemManagerBodyElem = document.querySelector('.item-manager-model-body');
     itemManagerBodyElem.innerHTML = '';
-    const items = await CMS_API.ITEM.getAllItems().then(res => res.json());
+    const response = await CMS_API.ITEM.getAllItems();
+    const responseJSON = await response.json();
+    if(responseJSON.status && responseJSON.status != 200) {
+      showToast(`Failed to show items. Error: ${responseJSON.message}`, 5000, 'danger');
+      return;
+    }
+    const items = responseJSON;
+
+    // Display the items list
     items.forEach(item => {
       const itemElem = document.createElement('div');
       itemElem.classList.add('list');
@@ -230,21 +235,25 @@
 
     const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
     const response = await CMS_API.MENU.addItemListToMenu(selectedMenu.id, ...selectedItemsIds);
-    if (response.status === 200) {
+    if(response.status == 200) {
       $('.item-manager-model').modal('hide');
       displayMenu();
-    } else {
-      alert('Error adding items to menu');
+    }
+    else {
+      const responseJSON = await response.json();
+      showToast(`Error adding items to menu. Error: ${responseJSON.message}`, 5000, 'danger');
     }
   }
 
   const deleteItemFromMenu = async (itemId) => {
     const selectedMenu = selectedMenuType === "Breakfast" ? breakfastMenu : lunchMenu;
     const response = await CMS_API.MENU.removeItemFromMenu(selectedMenu.id, itemId);
-    if (response.status === 200) {
+    if(response.status == 200) {
       displayMenu();
-    } else {
-      alert('Error deleting item from menu');
+    }
+    else {
+      const responseJSON = await response.json();
+      showToast(`Error deleting item from menu. Error: ${responseJSON.message}`, 5000, 'danger');
     }
   }
 
@@ -258,19 +267,42 @@
     const itemQuantity = document.getElementById('item-quantity').value;
     const itemPrice = document.getElementById('item-price').value;
     const itemType = document.getElementById('item-type').value;
-    const res = await CMS_API.ITEM.addItem({
+    const response = await CMS_API.ITEM.addItem({
         name: itemName,
         quantity: itemQuantity,
         price: itemPrice,
         type: itemType
       });
-    if (res.status === 200) {
+    if(response.status == 200) {
       $('.create-item-model').modal('hide');
       showItemManager();
-    } else {
-      alert('Error creating item');
+    }
+    else {
+      const responseJSON = await response.json();
+      showToast(`Failed to create new item. Error: ${responseJSON.message}`, 5000, 'danger');
     }
   }
+
+  // -- Util Functions --
+  const showToast = async (msg, timeout, toastType = 'primary') => {
+        const toast = document.createElement('div'); 
+        toast.classList.add('toast', 'position-fixed', 'bottom-0', 'end-0', 'm-3', `bg-${toastType}`, `text-white`);
+        toast.classList.add('toast', 'fade', 'position-fixed', 'bottom-0', 'end-0', 'm-3');
+        toast.setAttribute('style', 'z-index: 1061;');
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.innerHTML = `
+        <div class="toast-body d-flex">
+            <div>${msg}</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+
+        </div>
+        `;
+        document.body.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast, { autohide: true, delay: timeout });
+        bsToast.show();
+    }
 </script>
 
 
